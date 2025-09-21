@@ -17,9 +17,25 @@ This version has been updated to fix compatibility issues with newer Home Assist
 
 ## Install
 
-_This card is available in [HACS](https://github.com/custom-components/hacs) (Home Assistant Community Store)_
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
+[![GitHub release](https://img.shields.io/github/release/kalkih/simple-weather-card.svg)](https://github.com/kalkih/simple-weather-card/releases/latest)
 
-### Manual install
+### HACS Installation (Recommended)
+
+This card is available in [HACS](https://github.com/custom-components/hacs) (Home Assistant Community Store) for easy installation and updates.
+
+1. Open HACS in your Home Assistant instance
+2. Go to **Frontend**
+3. Click the **three dots** (⋮) in the top right
+4. Select **Custom repositories**
+5. Add this repository URL: `https://github.com/kalkih/simple-weather-card`
+6. Select **Lovelace** as the category
+7. Click **Add**
+8. Find **Simple Weather Card** in the list and click **Install**
+
+📖 **[Detailed HACS Installation Guide](HACS_INSTALLATION.md)**
+
+### Manual Installation
 
 1. Download and copy `simple-weather-card-bundle.js` from the [latest release](https://github.com/kalkih/simple-weather-card/releases/latest) into your `config/www` directory.
 

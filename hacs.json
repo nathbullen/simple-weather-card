@@ -1,0 +1,9 @@
+{
+  "name": "Simple Weather Card",
+  "content_in_root": true,
+  "filename": "simple-weather-card-bundle.js",
+  "country": ["US", "GB", "DE", "FR", "IT", "ES", "NL", "BE", "SE", "NO", "DK", "FI", "PL", "CZ", "SK", "HU", "RO", "BG", "HR", "SI", "EE", "LV", "LT", "PT", "GR", "CY", "MT", "LU", "IE", "AT", "CH", "LI", "IS", "CA", "AU", "NZ", "JP", "KR", "CN", "TW", "HK", "SG", "MY", "TH", "VN", "ID", "PH", "IN", "BD", "PK", "LK", "NP", "BT", "MV", "AF", "IR", "IQ", "SY", "LB", "JO", "IL", "PS", "SA", "AE", "QA", "BH", "KW", "OM", "YE", "TR", "GE", "AM", "AZ", "KZ", "UZ", "TM", "TJ", "KG", "MN", "RU", "BY", "UA", "MD", "AL", "MK", "ME", "RS", "BA", "XK", "MX", "GT", "BZ", "SV", "HN", "NI", "CR", "PA", "CU", "JM", "HT", "DO", "PR", "TT", "BB", "GD", "LC", "VC", "AG", "KN", "DM", "BS", "AR", "BO", "BR", "CL", "CO", "EC", "FK", "GF", "GY", "PY", "PE", "SR", "UY", "VE", "ZA", "EG", "LY", "TN", "DZ", "MA", "SD", "SS", "ET", "ER", "DJ", "SO", "KE", "UG", "TZ", "RW", "BI", "MW", "ZM", "ZW", "BW", "NA", "SZ", "LS", "MG", "MU", "SC", "KM", "YT", "RE", "MZ", "AO", "CD", "CG", "CM", "CF", "TD", "NE", "NG", "BJ", "TG", "GH", "BF", "CI", "LR", "SL", "GN", "GW", "GM", "SN", "ML", "MR", "CV", "ST", "GQ", "GA", "AO", "CD", "CG", "CM", "CF", "TD", "NE", "NG", "BJ", "TG", "GH", "BF", "CI", "LR", "SL", "GN", "GW", "GM", "SN", "ML", "MR", "CV", "ST", "GQ", "GA"],
+  "render_readme": true,
+  "domains": ["weather"],
+  "homeassistant": "2023.1.0"
+}
