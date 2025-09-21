@@ -2,11 +2,106 @@ import WeatherEntity from "./weather";
 import style from "./style";
 import { handleClick } from "./handleClick";
 
-const LitElement =
-  window.LitElement ||
-  Object.getPrototypeOf(
-    customElements.get("ha-panel-lovelace") || customElements.get("hc-lovelace")
-  );
+// Robust LitElement detection with multiple fallbacks
+function findLitElement() {
+  // First try window.LitElement
+  if (window.LitElement) {
+    return window.LitElement;
+  }
+  
+  // Try to get from Home Assistant components
+  const haComponents = ['ha-panel-lovelace', 'hc-lovelace', 'ha-card', 'ha-panel-config'];
+  for (const componentName of haComponents) {
+    const component = customElements.get(componentName);
+    if (component) {
+      const proto = Object.getPrototypeOf(component);
+      if (proto && proto.render) {
+        return proto.constructor;
+      }
+    }
+  }
+  
+  // Try to find any LitElement in the prototype chain
+  const allElements = Array.from(customElements.entries());
+  for (const [name, element] of allElements) {
+    if (name.startsWith('ha-')) {
+      let proto = element;
+      while (proto && proto !== HTMLElement) {
+        if (proto.render && proto.connectedCallback) {
+          return proto.constructor;
+        }
+        proto = Object.getPrototypeOf(proto);
+      }
+    }
+  }
+  
+  return null;
+}
+
+// Create a robust LitElement fallback
+function createLitElementFallback() {
+  return class LitElement extends HTMLElement {
+    static get properties() {
+      return {};
+    }
+    
+    static get styles() {
+      return [];
+    }
+    
+    constructor() {
+      super();
+    }
+    
+    render() {
+      return '';
+    }
+    
+    createRenderRoot() {
+      return this;
+    }
+    
+    shouldUpdate() {
+      return true;
+    }
+    
+    update() {
+      if (this.shouldUpdate()) {
+        this.render();
+      }
+    }
+    
+    connectedCallback() {
+      this.update();
+    }
+  };
+}
+
+// Try to find LitElement, with fallback
+let LitElement = findLitElement();
+
+if (!LitElement) {
+  console.warn("Simple Weather Card: LitElement not found, using fallback");
+  LitElement = createLitElementFallback();
+}
+
+// Ensure html and css template functions exist
+if (!LitElement.prototype.html) {
+  LitElement.prototype.html = function(strings, ...values) {
+    return strings.reduce((result, string, i) => {
+      return result + string + (values[i] || '');
+    }, '');
+  };
+}
+
+if (!LitElement.prototype.css) {
+  LitElement.prototype.css = function(strings, ...values) {
+    return strings.reduce((result, string, i) => {
+      return result + string + (values[i] || '');
+    }, '');
+  };
+}
+
 const { html, css } = LitElement.prototype;
 
 const UNITS = {
@@ -224,8 +319,29 @@ class SimpleWeatherCard extends LitElement {
   }
 }
 
-// Register the custom element
-customElements.define("simple-weather-card", SimpleWeatherCard);
+// Register the custom element when DOM is ready
+function registerCard() {
+  if (customElements.get('simple-weather-card')) {
+    return; // Already registered
+  }
+  
+  try {
+    customElements.define("simple-weather-card", SimpleWeatherCard);
+    console.log("Simple Weather Card registered successfully");
+  } catch (error) {
+    console.error("Failed to register Simple Weather Card:", error);
+  }
+}
+
+// Try to register immediately
+registerCard();
+
+// Also try when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', registerCard);
+} else {
+  registerCard();
+}
 
 // Configures the preview in the Lovelace card picker
 window.customCards = window.customCards || [];
