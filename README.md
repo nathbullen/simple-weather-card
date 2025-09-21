@@ -7,11 +7,11 @@ A minimalistic weather card for [Home Assistant](https://github.com/home-assista
 ## ⚠️ Compatibility Update (v0.9.0)
 
 This version has been updated to fix compatibility issues with newer Home Assistant frontend versions. The card now uses:
-- Lit 3.x for modern web component support
+- Lit 2.8.0 for stable web component support
 - Updated build tools (Webpack 5, Babel 7.23+)
-- Modern ES6 modules and decorators
+- Simplified architecture for maximum compatibility
 
-**If you're experiencing "TypeError: e is not a function" errors, this update should resolve them.**
+**If you're experiencing "TypeError: e is not a function" or "customElements.entries is not a function" errors, this update should resolve them.**
 
 ![Preview](https://user-images.githubusercontent.com/457678/53588519-61dfdf80-3b8d-11e9-9f0d-f5995ba794ce.png)
 

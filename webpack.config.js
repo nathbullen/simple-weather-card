@@ -4,8 +4,8 @@ module.exports = {
   entry: './src/main.js',
   output: {
     filename: 'simple-weather-card-bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true,
+    path: path.resolve(__dirname),
+    clean: false,
   },
   module: {
     rules: [
