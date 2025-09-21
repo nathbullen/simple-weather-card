@@ -4,6 +4,15 @@
 
 A minimalistic weather card for [Home Assistant](https://github.com/home-assistant/home-assistant) Lovelace UI, inspired by Google Material Design.
 
+## ⚠️ Compatibility Update (v0.9.0)
+
+This version has been updated to fix compatibility issues with newer Home Assistant frontend versions. The card now uses:
+- Lit 3.x for modern web component support
+- Updated build tools (Webpack 5, Babel 7.23+)
+- Modern ES6 modules and decorators
+
+**If you're experiencing "TypeError: e is not a function" errors, this update should resolve them.**
+
 ![Preview](https://user-images.githubusercontent.com/457678/53588519-61dfdf80-3b8d-11e9-9f0d-f5995ba794ce.png)
 
 ## Install
@@ -18,7 +27,7 @@ _This card is available in [HACS](https://github.com/custom-components/hacs) (Ho
 
    ```yaml
    resources:
-     - url: /local/simple-weather-card-bundle.js?v=0.8.5
+     - url: /local/simple-weather-card-bundle.js?v=0.9.0
        type: module
    ```
 
@@ -36,7 +45,7 @@ _This card is available in [HACS](https://github.com/custom-components/hacs) (Ho
 
    ```yaml
    resources:
-     - url: /local/simple-weather-card-bundle.js?v=0.8.5
+     - url: /local/simple-weather-card-bundle.js?v=0.9.0
        type: module
    ```
 
@@ -50,7 +59,7 @@ _This card is available in [HACS](https://github.com/custom-components/hacs) (Ho
 
    ```yaml
    resources:
-     - url: /local/simple-weather-card-bundle.js?v=0.8.5
+     - url: /local/simple-weather-card-bundle.js?v=0.9.0
        type: module
    ```
 

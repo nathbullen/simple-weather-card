@@ -1,7 +1,11 @@
+const path = require('path');
+
 module.exports = {
   entry: './src/main.js',
   output: {
-    filename: 'simple-weather-card-bundle.js'
+    filename: 'simple-weather-card-bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   module: {
     rules: [
@@ -10,35 +14,24 @@ module.exports = {
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                "@babel/preset-env",
-                {
-                  "modules": 'commonjs',
-                  "targets": "> 5%, not dead",
-                }
-              ],
-            ],
-            plugins: [
-              ["@babel/plugin-transform-template-literals"],
-              ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true } ],
-              ["@babel/plugin-proposal-class-properties"],
-            ],
-          },
         },
       },
       {
         test: /\.(png|svg)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192
-            },
-          },
-        ],
+        type: 'asset/inline',
+        generator: {
+          dataUrl: {
+            encoding: 'base64',
+            mimetype: 'image/png'
+          }
+        }
       },
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.mjs'],
+  },
+  optimization: {
+    minimize: true,
   },
 };

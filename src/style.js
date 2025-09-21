@@ -1,4 +1,4 @@
-function getStyles(css) {
+export default function getStyles(css) {
   return css`
     ha-card {
       display: flex;
@@ -72,5 +72,3 @@ function getStyles(css) {
     }
   `;
 }
-
-export default getStyles;

@@ -1,14 +1,8 @@
 import WeatherEntity from "./weather";
 import style from "./style";
 import { handleClick } from "./handleClick";
-import { customElement } from "lit/decorators.js";
-
-const LitElement =
-  window.LitElement ||
-  Object.getPrototypeOf(
-    customElements.get("ha-panel-lovelace") || customElements.get("hc-lovelace")
-  );
-const { html, css } = LitElement.prototype;
+import { LitElement, html, css } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
 const UNITS = {
   celsius: "°C",
@@ -33,15 +27,11 @@ class SimpleWeatherCard extends LitElement {
 
   static styles = style(css);
 
-  static get properties() {
-    return {
-      _hass: { type: Object },
-      config: { type: Object },
-      entity: { type: Object },
-      weather: { type: Object },
-      custom: { type: Object },
-    };
-  }
+  @property({ type: Object }) _hass;
+  @property({ type: Object }) config;
+  @property({ type: Object }) entity;
+  @property({ type: Object }) weather;
+  @property({ type: Object }) custom = {};
 
   set hass(hass) {
     const { custom, entity } = this.config;
@@ -115,7 +105,7 @@ class SimpleWeatherCard extends LitElement {
   }
 
   shouldUpdate(changedProps) {
-    return ["entity", "custom"].some((prop) => changedProps.has(prop));
+    return changedProps.has("entity") || changedProps.has("custom");
   }
 
   render() {
