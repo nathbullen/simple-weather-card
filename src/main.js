@@ -22,7 +22,31 @@ function findLitElement() {
   }
   
   // Try to find any LitElement in the prototype chain
-  const allElements = Array.from(customElements.entries());
+  // Use a more compatible approach for older browsers
+  const allElements = [];
+  
+  // Try modern approach first
+  if (customElements.entries) {
+    try {
+      allElements.push(...Array.from(customElements.entries()));
+    } catch (e) {
+      // Fallback for older browsers
+    }
+  }
+  
+  // Fallback: try to find HA components by name
+  const haComponentNames = [
+    'ha-panel-lovelace', 'hc-lovelace', 'ha-card', 'ha-panel-config',
+    'ha-sidebar', 'ha-main', 'ha-app-layout', 'ha-drawer'
+  ];
+  
+  for (const name of haComponentNames) {
+    const element = customElements.get(name);
+    if (element) {
+      allElements.push([name, element]);
+    }
+  }
+  
   for (const [name, element] of allElements) {
     if (name.startsWith('ha-')) {
       let proto = element;

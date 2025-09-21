@@ -7,6 +7,7 @@
 - Fixed "TypeError: e is not a function" error in newer Home Assistant versions
 - Fixed "e.constructor.createProperty is not a function" decorator compatibility issue
 - Fixed "custom element does not exist" error by using Home Assistant's LitElement
+- Fixed "customElements.entries is not a function" error for older browser compatibility
 - Removed external Lit dependency to prevent version conflicts
 - Updated build system to Webpack 5 and Babel 7.23+
 - Simplified property definitions for better compatibility

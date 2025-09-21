@@ -59,9 +59,22 @@
         addDebug(`window.LitElement: ${typeof window.LitElement}`, window.LitElement ? 'success' : 'error');
         addDebug(`customElements.get('ha-panel-lovelace'): ${typeof customElements.get('ha-panel-lovelace')}`, customElements.get('ha-panel-lovelace') ? 'success' : 'info');
         addDebug(`customElements.get('hc-lovelace'): ${typeof customElements.get('hc-lovelace')}`, customElements.get('hc-lovelace') ? 'success' : 'info');
+        addDebug(`customElements.entries available: ${typeof customElements.entries}`, customElements.entries ? 'success' : 'error');
         
         // Check if any HA components exist
-        const haComponents = Array.from(customElements.entries()).filter(([name]) => name.startsWith('ha-'));
+        let haComponents = [];
+        if (customElements.entries) {
+            try {
+                haComponents = Array.from(customElements.entries()).filter(([name]) => name.startsWith('ha-'));
+            } catch (e) {
+                addDebug(`Error using customElements.entries: ${e.message}`, 'error');
+            }
+        } else {
+            // Fallback approach
+            const haComponentNames = ['ha-panel-lovelace', 'hc-lovelace', 'ha-card', 'ha-panel-config', 'ha-sidebar', 'ha-main', 'ha-app-layout', 'ha-drawer'];
+            haComponents = haComponentNames.map(name => [name, customElements.get(name)]).filter(([name, element]) => element);
+        }
+        
         addDebug(`HA Components found: ${haComponents.length}`, haComponents.length > 0 ? 'success' : 'info');
         if (haComponents.length > 0) {
             addDebug(`First few HA components: ${haComponents.slice(0, 5).map(([name]) => name).join(', ')}`, 'debug');
