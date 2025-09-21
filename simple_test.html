@@ -15,17 +15,50 @@
         .test-container {
             max-width: 400px;
             margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
         }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
     <h1>Simple Weather Card Test</h1>
+    
     <div class="test-container">
+        <h2>Custom Element Registration Test</h2>
+        <div id="status"></div>
+        
+        <h3>Card Test</h3>
         <simple-weather-card id="weather-card"></simple-weather-card>
     </div>
 
     <script>
-        // Mock Home Assistant data for testing
+        // Test custom element registration
+        const statusDiv = document.getElementById('status');
+        
+        function updateStatus(message, isError = false) {
+            statusDiv.innerHTML = `<div class="status ${isError ? 'error' : 'success'}">${message}</div>`;
+        }
+        
+        // Check if custom element is defined
+        if (customElements.get('simple-weather-card')) {
+            updateStatus('✅ Custom element "simple-weather-card" is registered successfully!');
+        } else {
+            updateStatus('❌ Custom element "simple-weather-card" is NOT registered!', true);
+        }
+        
+        // Test card configuration
+        const card = document.getElementById('weather-card');
+        
+        // Mock Home Assistant data
         const mockHass = {
             states: {
                 'weather.home': {
@@ -70,23 +103,29 @@
             }
         };
 
-        // Configure the card
-        const card = document.getElementById('weather-card');
-        card.setConfig({
-            entity: 'weather.home',
-            name: 'Test Weather',
-            primary_info: ['extrema'],
-            secondary_info: ['precipitation', 'humidity'],
-            backdrop: {
-                day: '#45aaf2',
-                night: '#a55eea',
-                text: '#ffffff',
-                fade: false
-            }
-        });
+        try {
+            // Configure the card
+            card.setConfig({
+                entity: 'weather.home',
+                name: 'Test Weather',
+                primary_info: ['extrema'],
+                secondary_info: ['precipitation', 'humidity'],
+                backdrop: {
+                    day: '#45aaf2',
+                    night: '#a55eea',
+                    text: '#ffffff',
+                    fade: false
+                }
+            });
 
-        // Set the hass property to trigger rendering
-        card.hass = mockHass;
+            // Set the hass property to trigger rendering
+            card.hass = mockHass;
+            
+            updateStatus('✅ Card configuration and rendering successful!');
+        } catch (error) {
+            updateStatus(`❌ Error configuring card: ${error.message}`, true);
+            console.error('Card configuration error:', error);
+        }
     </script>
 </body>
 </html>

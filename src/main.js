@@ -2,7 +2,6 @@ import WeatherEntity from "./weather";
 import style from "./style";
 import { handleClick } from "./handleClick";
 import { LitElement, html, css } from "lit";
-import { customElement, property } from "lit/decorators.js";
 
 const UNITS = {
   celsius: "°C",
@@ -18,7 +17,6 @@ const INFO = {
   pressure: { icon: "pressure", unit: "hPa" },
 };
 
-@customElement("simple-weather-card")
 class SimpleWeatherCard extends LitElement {
   constructor() {
     super();
@@ -27,11 +25,15 @@ class SimpleWeatherCard extends LitElement {
 
   static styles = style(css);
 
-  @property({ type: Object }) _hass;
-  @property({ type: Object }) config;
-  @property({ type: Object }) entity;
-  @property({ type: Object }) weather;
-  @property({ type: Object }) custom = {};
+  static get properties() {
+    return {
+      _hass: { type: Object },
+      config: { type: Object },
+      entity: { type: Object },
+      weather: { type: Object },
+      custom: { type: Object }
+    };
+  }
 
   set hass(hass) {
     const { custom, entity } = this.config;
@@ -215,6 +217,9 @@ class SimpleWeatherCard extends LitElement {
     return unit;
   }
 }
+
+// Register the custom element
+customElements.define("simple-weather-card", SimpleWeatherCard);
 
 // Configures the preview in the Lovelace card picker
 window.customCards = window.customCards || [];
