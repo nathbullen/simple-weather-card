@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Assistant Environment Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .test-container {
+            max-width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Home Assistant Environment Test</h1>
+    
+    <div class="test-container">
+        <h2>Simulating Home Assistant Environment</h2>
+        <div id="status"></div>
+        
+        <h3>Card Test</h3>
+        <simple-weather-card id="weather-card"></simple-weather-card>
+    </div>
+
+    <script>
+        // Simulate Home Assistant environment
+        window.LitElement = class LitElement extends HTMLElement {
+            static get properties() {
+                return {};
+            }
+            
+            static get styles() {
+                return [];
+            }
+            
+            constructor() {
+                super();
+            }
+            
+            render() {
+                return '';
+            }
+            
+            createRenderRoot() {
+                return this;
+            }
+            
+            shouldUpdate() {
+                return true;
+            }
+            
+            update() {
+                if (this.shouldUpdate()) {
+                    this.render();
+                }
+            }
+        };
+        
+        // Add html and css template functions
+        window.LitElement.prototype.html = function(strings, ...values) {
+            return strings.reduce((result, string, i) => {
+                return result + string + (values[i] || '');
+            }, '');
+        };
+        
+        window.LitElement.prototype.css = function(strings, ...values) {
+            return strings.reduce((result, string, i) => {
+                return result + string + (values[i] || '');
+            }, '');
+        };
+        
+        // Load the card
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = './simple-weather-card-bundle.js';
+        document.head.appendChild(script);
+        
+        // Test after a short delay
+        setTimeout(() => {
+            const statusDiv = document.getElementById('status');
+            
+            function updateStatus(message, isError = false) {
+                statusDiv.innerHTML = `<div class="status ${isError ? 'error' : 'success'}">${message}</div>`;
+            }
+            
+            // Check if custom element is defined
+            if (customElements.get('simple-weather-card')) {
+                updateStatus('✅ Custom element "simple-weather-card" is registered successfully!');
+                
+                // Test card configuration
+                const card = document.getElementById('weather-card');
+                
+                // Mock Home Assistant data
+                const mockHass = {
+                    states: {
+                        'weather.home': {
+                            entity_id: 'weather.home',
+                            state: 'sunny',
+                            attributes: {
+                                friendly_name: 'Home Weather',
+                                temperature: 22,
+                                humidity: 65,
+                                pressure: 1013,
+                                wind_speed: 5,
+                                wind_bearing: 180,
+                                forecast: [{
+                                    temperature: 25,
+                                    templow: 15,
+                                    precipitation: 0,
+                                    precipitation_probability: 10
+                                }]
+                            }
+                        },
+                        'sun.sun': {
+                            state: 'above_horizon'
+                        }
+                    },
+                    config: {
+                        unit_system: {
+                            temperature: '°C',
+                            length: 'km',
+                            speed: 'km/h'
+                        }
+                    },
+                    selectedLanguage: 'en',
+                    language: 'en',
+                    resources: {
+                        en: {
+                            'component.weather.state._.sunny': 'Sunny',
+                            'state.default.unknown': 'Unknown'
+                        }
+                    },
+                    connection: {
+                        haVersion: '2024.1.0'
+                    }
+                };
+
+                try {
+                    // Configure the card
+                    card.setConfig({
+                        entity: 'weather.home',
+                        name: 'Test Weather',
+                        primary_info: ['extrema'],
+                        secondary_info: ['precipitation', 'humidity'],
+                        backdrop: {
+                            day: '#45aaf2',
+                            night: '#a55eea',
+                            text: '#ffffff',
+                            fade: false
+                        }
+                    });
+
+                    // Set the hass property to trigger rendering
+                    card.hass = mockHass;
+                    
+                    updateStatus('✅ Card configuration and rendering successful!');
+                } catch (error) {
+                    updateStatus(`❌ Error configuring card: ${error.message}`, true);
+                    console.error('Card configuration error:', error);
+                }
+            } else {
+                updateStatus('❌ Custom element "simple-weather-card" is NOT registered!', true);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

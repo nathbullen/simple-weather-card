@@ -1,7 +1,13 @@
 import WeatherEntity from "./weather";
 import style from "./style";
 import { handleClick } from "./handleClick";
-import { LitElement, html, css } from "lit";
+
+const LitElement =
+  window.LitElement ||
+  Object.getPrototypeOf(
+    customElements.get("ha-panel-lovelace") || customElements.get("hc-lovelace")
+  );
+const { html, css } = LitElement.prototype;
 
 const UNITS = {
   celsius: "°C",
